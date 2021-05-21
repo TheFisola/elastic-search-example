@@ -1,6 +1,9 @@
 package com.thefisola.elasticsearchexample.controller;
 
+import com.thefisola.elasticsearchexample.dto.ProductDto;
 import com.thefisola.elasticsearchexample.model.Product;
+import com.thefisola.elasticsearchexample.model.ProductSearch;
+import com.thefisola.elasticsearchexample.service.ProductElasticSearchService;
 import com.thefisola.elasticsearchexample.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +15,17 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductElasticSearchService productElasticSearchService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductElasticSearchService productElasticSearchService) {
         this.productService = productService;
+        this.productElasticSearchService = productElasticSearchService;
     }
 
-    @GetMapping
-    public List<Product> searchProduct(@RequestParam String query) {
-        return productService.searchProduct(query);
+    @GetMapping("/auto-complete")
+    public List<ProductSearch> searchProductAutoComplete(@RequestParam String query) {
+        return productElasticSearchService.searchProducts(query);
     }
 
     @GetMapping
@@ -29,7 +34,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public Product createProduct(@RequestBody ProductDto productDto) {
+        return productService.createProduct(productDto);
     }
 }

@@ -1,27 +1,32 @@
 package com.thefisola.elasticsearchexample.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.UUIDGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
+@Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "products")
 public class Product implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "uuid2")
-    String id;
+    private String id;
     @Column
-    String name;
+    private String name;
     @Column
-    String description;
+    private String description;
     @Column
-    int quantity;
+    private int quantity;
     @Column
-    long price;
+    private long price;
 }
